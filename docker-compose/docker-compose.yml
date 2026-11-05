@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # AgentShield Runtime Defense & Sidecar Daemon
+  agentshield:
+    image: ghcr.io/ritualdev-lab/agentshield:0.2.1
+    container_name: agentshield-runtime
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64M
+    environment:
+      - AGENTSHIELD_AIR_GAPPED=1
+      - AGENTSHIELD_STRICT_MODE=true
+      - AGENTSHIELD_AUDIT_SECRET=${AGENTSHIELD_AUDIT_SECRET:-corporate_default_salt}
+      - PORT=3000
+    ports:
+      - "127.0.0.1:3000:3000"
+    networks:
+      - internal-airgap
+
+  # DBShield Database Wire Proxy Guardrail
+  dbshield:
+    image: ghcr.io/ritualdev-lab/dbshield:1.0.0
+    container_name: dbshield-proxy
+    restart: unless-stopped
+    environment:
+      - DBSHIELD_STRICT=true
+      - DBSHIELD_PORT=5433
+      - UPSTREAM_DB_HOST=postgres
+      - UPSTREAM_DB_PORT=5432
+    ports:
+      - "127.0.0.1:5433:5433"
+    depends_on:
+      - postgres
+    networks:
+      - internal-airgap
+
+  # SkillPrism Context Compaction & Redis Cache
+  skillprism-cache:
+    image: redis:7.2-alpine
+    container_name: skillprism-cache
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-ritual_dev_cache_pass}
+    networks:
+      - internal-airgap
+
+  # Isolated Demo Postgres Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres-upstream
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres_secure_demo}
+      - POSTGRES_DB=agent_production
+    networks:
+      - internal-airgap
+
+networks:
+  internal-airgap:
+    internal: true # Disables outbound external internet gateway routing

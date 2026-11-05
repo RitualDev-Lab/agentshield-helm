@@ -1,0 +1,22 @@
+apiVersion: v2
+name: agentshield
+description: Production Kubernetes Helm Chart for AgentShield Zero-Leak Secret Defense & Kernel Sandbox (Air-Gapped Private VPC)
+type: application
+version: 1.0.0
+appVersion: "0.2.1"
+home: https://ritualdev.in/enterprise
+sources:
+  - https://github.com/RitualDev-Lab/AgentShield
+  - https://github.com/RitualDev-Lab/agentshield-helm
+maintainers:
+  - name: RitualDev Studio
+    email: developer@ritualdev.com
+    url: https://ritualdev.in
+keywords:
+  - ai-agents
+  - security
+  - air-gapped
+  - vpc
+  - sandboxing
+  - zero-leak
+  - kubernetes
