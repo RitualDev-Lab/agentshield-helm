@@ -1,0 +1,6 @@
+# ArtifactHub repository metadata configuration
+# Reference: https://artifacthub.io/docs/topics/repositories/helm-charts/
+repositoryID: ritualdev-agentshield-helm
+owners:
+  - name: RitualDev Lab
+    email: security@ritualdev.in
