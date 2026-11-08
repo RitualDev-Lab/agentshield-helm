@@ -90,3 +90,57 @@ autoscaling:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+
+# Host DaemonSet Orchestration (agentshieldd)
+daemonset:
+  enabled: true
+  image:
+    repository: ghcr.io/ritualdev-lab/agentshield
+    tag: "0.2.1"
+    pullPolicy: IfNotPresent
+  hostSocketPath: "/var/run/agentshield.sock"
+  authToken: "sec_ritual_daemon_token_prod_9918"
+  maxClients: 250
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# High-Availability DBShield Database Wire Proxy
+dbshield:
+  enabled: true
+  replicaCount: 3
+  image:
+    repository: ghcr.io/ritualdev-lab/dbshield
+    tag: "0.2.1"
+    pullPolicy: IfNotPresent
+  safetyTier: "STRICT"
+  raftPeers: "dbshield-0.dbshield,dbshield-1.dbshield,dbshield-2.dbshield"
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+# SkillPrism Shared VPC Hub & Redis Context Cache
+skillprism:
+  enabled: true
+  replicaCount: 2
+  image:
+    repository: ghcr.io/ritualdev-lab/skillprism
+    tag: "0.2.1"
+    pullPolicy: IfNotPresent
+  redisUrl: "redis://skillprism-redis.internal.corp:6379"
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1.5Gi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+
