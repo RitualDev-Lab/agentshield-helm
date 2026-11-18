@@ -6,6 +6,8 @@
 [![SOC 2 / DPDP Ready](https://img.shields.io/badge/Compliance-SOC%202%20Type%20II%20%2F%20DPDP-00D4FF?style=for-the-badge)](https://ritualdev.in/trust)
 
 > Production-grade Kubernetes Helm charts, NetworkPolicies, and Docker Compose recipes for deploying AgentShield inside air-gapped enterprise Virtual Private Clouds (VPC).
+>
+> **Canonical IaC Mirror**: This chart (`v1.1.0`, `appVersion: 0.2.2`) is synchronized directly with the canonical Enterprise Governance Helm & Terraform modules in [`RitualDev-Lab/enterprise-governance-suite/helm/agentshield`](https://github.com/RitualDev-Lab/enterprise-governance-suite/tree/main/helm/agentshield) to guarantee zero version drift.
 
 ---
 
